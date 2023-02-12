@@ -4,8 +4,10 @@ import numpy as np
 import os
 import random
 from torch.nn.functional import softmax
+from sklearn.metrics import accuracy_score, f1_score
 
-from sklearn.metrics import accuracy_score
+from utils.metrics import classwise_accuracy_score
+from utils.util import setup_save_dir
 
 class Trainer:
     def __init__(self, model, optimizer, train_dl, test_dl, device):
@@ -14,8 +16,8 @@ class Trainer:
         self.train_dl = train_dl
         self.test_dl = test_dl
         self.device = device
-        self.save_dir = "trained_models"
         self.criterion = nn.CrossEntropyLoss()
+        self.best_val_f1 = 0
     
     def _run_one_epoch(self, f_train):
         model = self.model
@@ -59,17 +61,36 @@ class Trainer:
             print(f"--train loss: {train_loss:.5f}, acc:{acc:.2f}", end=" ")
         else:
             val_loss = np.mean(losses)
-            print(f"--val loss: {val_loss:.5f}, acc:{acc:.2f}")
-            return val_loss
+            cw_acc = classwise_accuracy_score(y_true, y_pred)
+            val_f1 = f1_score(y_true, y_pred, average='macro')
+            print(f"--val loss: {val_loss:.5f}, acc:{acc:.2f}, cw_acc:{cw_acc}, f1:{val_f1:.2f}")
+            return val_f1
 
-    def fit(self, num_epochs):
+    def _save_model(self, epoch, val_f1):
+        if val_f1 > self.best_val_f1:
+            self.best_val_f1 = val_f1
+        
+            if hasattr(self.model, 'module'):
+                # module dict if there is a dataparallel wrap
+                model_state_dict = self.model.module.state_dict()
+            else:
+                model_state_dict = self.model.state_dict()
+
+            model_name = os.path.join(self.save_dir, f"ep{epoch}_model.pth")
+            torch.save(model_state_dict, model_name)
+            print(f"Epoch {epoch} model saved!") 
+
+    def fit(self, num_epochs, run_name):
         print("Model training started")
 
+        self.save_dir = setup_save_dir(os.path.join("trained_models", run_name))
+        
         for epoch in range(1, num_epochs+1):
             print(f"Epoch {epoch}/{num_epochs}", end=" ")
             
             self._run_one_epoch(f_train=True)
-            self._run_one_epoch(f_train=False)
+            val_f1 = self._run_one_epoch(f_train=False)
+            self._save_model(epoch, val_f1)
 
         print(f"Model training completed!")
 

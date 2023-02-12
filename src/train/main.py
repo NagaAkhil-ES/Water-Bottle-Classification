@@ -1,7 +1,7 @@
 import torch
 
 from train.trainer import setup_device, Trainer, setup_deterministic_training
-from utils.config import load_config
+from utils.config import load_config, save_config
 from data.loader import get_data_loader
 from model.loader import get_model
 
@@ -17,4 +17,5 @@ if __name__ == "__main__":
     optimizer = torch.optim.Adam(model.parameters(), lr=params.learning_rate)
 
     tr = Trainer(model, optimizer, train_loader, val_loader, device)
-    tr.fit(num_epochs=params.num_epochs)
+    tr.fit(num_epochs=params.num_epochs, run_name=params.run_name)
+    save_config(params, tr.save_dir)
