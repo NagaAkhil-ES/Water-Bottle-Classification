@@ -9,6 +9,11 @@
 - python environment with all dependencies
 
 
+## Models
+1. [CustomCNN1 ref](https://www.kaggle.com/code/basu369victor/pytorch-tutorial-the-classification/notebook#The-Neural-Network)
+2. [CustomCNN2 ref](https://www.kaggle.com/code/ashmalvayani/96-67-accuracy-with-cnn-s)
+3. [resnet18 ref](https://pytorch.org/vision/0.8/models.html)
+
 ## Getting started
 
 ### set cwd
@@ -32,3 +37,4 @@ pip install torch==1.8.0+cu111 torchvision==0.9.0+cu111 -f https://download.pyto
 - python src/data_prep/step1_generate_meta_csv.py  -->  to get the metadata
 - python src/data_prep/step2_data_cleaning.py  --> to combine images to single folder with new names
 - python src/data_prep/step3_train_test_split.py
+

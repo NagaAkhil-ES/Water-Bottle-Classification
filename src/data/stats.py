@@ -6,7 +6,8 @@ def show_class_distribution(l_labels, title=None):
                             "ratio": l_labels.value_counts(normalize=True).round(2)})
     if title is not None:
         print(f"\n{title} distribution")
-    print(dist_df, "\n")
+    print(dist_df)
+    print(f"total size: {len(l_labels)} \n")
 
 # unit test block
 if __name__ == "__main__":
