@@ -65,15 +65,15 @@ class Trainer:
 
         # show report
         acc = accuracy_score(y_true, y_pred)
+        f1 = f1_score(y_true, y_pred, average='macro')
         if f_train:
             train_loss = np.mean(losses[-10:])
-            print(f"--train loss: {train_loss:.4f}, acc:{acc:.2f}", end="  ")
+            print(f"--train loss: {train_loss:.4f}, acc:{acc:.2f}, f1:{f1:.2f}", end="  ")
         else:
             val_loss = np.mean(losses)
             cw_acc = classwise_accuracy_score(y_true, y_pred)
-            val_f1 = f1_score(y_true, y_pred, average='macro')
-            print(f"--val loss: {val_loss:.4f}, acc:{acc:.2f}, cw_acc:{cw_acc}, f1:{val_f1:.2f}")
-            return val_f1
+            print(f"--val loss: {val_loss:.4f}, acc:{acc:.2f}, cw_acc:{cw_acc}, f1:{f1:.2f}")
+            return f1
 
     def _save_model(self, epoch, val_f1):
         if val_f1 > self.best_val_f1:

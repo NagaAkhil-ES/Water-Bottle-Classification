@@ -12,7 +12,7 @@ def setup_deterministic_env(seed=137):
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
 
-    # this is under beta version uncomment it if training is not deteministic
+    # uncomment this if the training is still not deteministic
     # os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"
     # torch.use_deterministic_algorithms(True)
 

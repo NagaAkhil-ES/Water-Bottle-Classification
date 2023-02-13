@@ -49,6 +49,7 @@ python src/data_prep/step3_train_test_split.py --> to get train test csvs
 1. update parameters like run_name in `src/train/params.toml`
 2. Launch tmux session (optional)
 3. `python src/train/main.py`
+4. After completion of training save logs to `src/trained_models/<run_name>/log.txt` 
 
 Note: best models and its config file will be saved in `trained_models/<run_name>`
 
