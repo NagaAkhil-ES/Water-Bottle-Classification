@@ -65,7 +65,8 @@ python src/infer.py --image_path "" --ptm_path "" --device_type ""
 ```
 Example:
 ```
-python src/infer.py --image_path "data/clean/img_0001.jpeg" --ptm_path "trained_models/exp1/ep5_model.pth" --device_type gpu
+python src/infer.py --image_path "data/clean/img_0001.jpeg" --ptm_path "trained_models/best_model/exp2_1_ep5_model.pth" --device_type gpu
 ```
 
-## Pre trained models
+## Best trained models
+- trained_models/best_model/exp2_1_ep5_model.pth with train_f1: 0.93 and val_fl: 0.91
