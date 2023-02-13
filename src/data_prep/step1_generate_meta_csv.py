@@ -4,6 +4,7 @@ from pathlib import Path
 from sklearn.preprocessing import LabelEncoder
 
 from utils.util import setup_save_dir
+from data.stats import show_class_distribution
 
 if __name__ == "__main__":
     # parameters
@@ -27,7 +28,9 @@ if __name__ == "__main__":
 
     # show metadata and save it to csv
     print(meta_df)
-    print(meta_df.txt_label.value_counts())
-    print(meta_df.num_label.value_counts())
+    show_class_distribution(meta_df.txt_label, "Total dataset class")
+    txt_label_unique = meta_df["txt_label"].unique()
+    num_label_unique = label_encoder.fit_transform(txt_label_unique)
+    print("text and numerical labels ordered pairs\n", list(zip(txt_label_unique, num_label_unique)))
     setup_save_dir(save_dir)
     meta_df.to_csv(f"{save_dir}/metadata.csv", index=False)
