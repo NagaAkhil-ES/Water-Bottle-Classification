@@ -17,10 +17,9 @@ def get_data_loader(params, f_train, f_norm=True):
     meta_df = pd.read_csv(csv_path)
     show_class_distribution(meta_df.txt_label, title)
     d_set = WaterBottleDataset(params.images_dir, meta_df, transforms)
-    wdf = get_class_weights(meta_df.num_label)
-    print("Train class weights\n", wdf, "\n")
+    if f_train:
+        class_weights = get_class_weights(meta_df.num_label, method=1, f_show=True)
     if f_train and params.f_weighted_sampler:
-        class_weights = wdf["method_3"].tolist()
         samples_weight = meta_df.num_label.apply(lambda i: class_weights[i]).tolist()
         samples_weight = torch.tensor(samples_weight, dtype=torch.float)
         sampler = WeightedRandomSampler(samples_weight, len(samples_weight))

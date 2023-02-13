@@ -25,7 +25,7 @@ class Trainer:
     
     def _get_class_weights(self):
         l_labels = self.train_dl.dataset.meta_df.num_label
-        class_weights = get_class_weights(l_labels)["method_1"].tolist()
+        class_weights = get_class_weights(l_labels, method=1)
         class_weights = torch.tensor(class_weights, dtype=torch.float).to(self.device)
         return class_weights
     
