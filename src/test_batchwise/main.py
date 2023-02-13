@@ -3,7 +3,7 @@ import toml
 
 from utils.device import setup_device, setup_deterministic_env
 from utils.config import load_config
-from evaluate.tester import Tester, combine_train_test_params
+from test_batchwise.tester import Tester, combine_train_test_params
 from data.loader import get_data_loader
 from model.loader import get_model, get_ptm_path
 
