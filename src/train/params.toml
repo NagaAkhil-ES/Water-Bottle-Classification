@@ -7,7 +7,6 @@ images_dir = "data/clean"
 train_csv_path = "data/csvs/train_1.csv"
 val_csv_path = "data/csvs/test_1.csv"
 seed = 137
-
 image_shape = [224, 224]
 mean = [0.25,0.25,0.25]
 std = [0.25,0.25,0.25]
@@ -16,3 +15,5 @@ learning_rate = 1e-4
 ptm_path = ""
 num_epochs = 5
 model_arch = "resnet18"
+f_weighted_sampler = false       # sif true oversamples minority to have balanced batch
+f_weighted_loss = true

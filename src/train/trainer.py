@@ -8,16 +8,26 @@ from sklearn.metrics import accuracy_score, f1_score
 
 from utils.metrics import classwise_accuracy_score
 from utils.util import setup_save_dir
+from data.stats import get_class_weights
 
 class Trainer:
-    def __init__(self, model, optimizer, train_dl, test_dl, device):
+    def __init__(self, model, optimizer, train_dl, test_dl, device, f_weighted_loss=True):
         self.model = model
         self.optimizer = optimizer
         self.train_dl = train_dl
         self.test_dl = test_dl
         self.device = device
-        self.criterion = nn.CrossEntropyLoss()
+        if f_weighted_loss:
+            self.criterion = nn.CrossEntropyLoss(weight=self._get_class_weights(), reduction="mean")
+        else:
+            self.criterion = nn.CrossEntropyLoss()
         self.best_val_f1 = 0
+    
+    def _get_class_weights(self):
+        l_labels = self.train_dl.dataset.meta_df.num_label
+        class_weights = get_class_weights(l_labels)["method_1"].tolist()
+        class_weights = torch.tensor(class_weights, dtype=torch.float).to(self.device)
+        return class_weights
     
     def _run_one_epoch(self, f_train):
         model = self.model
@@ -58,7 +68,7 @@ class Trainer:
         acc = accuracy_score(y_true, y_pred)
         if f_train:
             train_loss = np.mean(losses[-10:])
-            print(f"--train loss: {train_loss:.5f}, acc:{acc:.2f}", end=" ")
+            print(f"--train loss: {train_loss:.4f}, acc:{acc:.2f}", end="  ")
         else:
             val_loss = np.mean(losses)
             cw_acc = classwise_accuracy_score(y_true, y_pred)
@@ -86,7 +96,7 @@ class Trainer:
         self.save_dir = setup_save_dir(os.path.join("trained_models", run_name))
         
         for epoch in range(1, num_epochs+1):
-            print(f"Epoch {epoch}/{num_epochs}", end=" ")
+            print(f"Epoch {epoch}/{num_epochs}", end="  ")
             
             self._run_one_epoch(f_train=True)
             val_f1 = self._run_one_epoch(f_train=False)

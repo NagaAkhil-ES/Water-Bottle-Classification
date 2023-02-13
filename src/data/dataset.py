@@ -40,7 +40,7 @@ if __name__ == "__main__":
     import pandas as pd
     from torchvision.utils import save_image
     images_dir = "data/clean"
-    meta_df = pd.read_csv("data/metadata.csv") #.sample(n=50, random_state=137)
+    meta_df = pd.read_csv("data/csvs/metadata.csv") #.sample(n=50, random_state=137)
 
     ds = WaterBottleDataset(images_dir, meta_df)
     print(len(ds))

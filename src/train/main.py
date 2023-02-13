@@ -16,6 +16,6 @@ if __name__ == "__main__":
     model = get_model(params.model_arch, device, params.ptm_path)
     optimizer = torch.optim.Adam(model.parameters(), lr=params.learning_rate)
 
-    tr = Trainer(model, optimizer, train_loader, val_loader, device)
+    tr = Trainer(model, optimizer, train_loader, val_loader, device, params.f_weighted_loss)
     tr.fit(num_epochs=params.num_epochs, run_name=params.run_name)
     save_config(params, tr.save_dir)

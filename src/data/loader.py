@@ -1,9 +1,10 @@
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, WeightedRandomSampler
 import pandas as pd
+import torch
 
 from data.dataset import WaterBottleDataset
 from data.transforms import get_transforms
-from data.stats import show_class_distribution
+from data.stats import show_class_distribution, get_class_weights
 
 def get_data_loader(params, f_train, f_norm=True):
     if f_train:
@@ -16,8 +17,17 @@ def get_data_loader(params, f_train, f_norm=True):
     meta_df = pd.read_csv(csv_path)
     show_class_distribution(meta_df.txt_label, title)
     d_set = WaterBottleDataset(params.images_dir, meta_df, transforms)
+    wdf = get_class_weights(meta_df.num_label)
+    print("Train class weights\n", wdf, "\n")
+    if f_train and params.f_weighted_sampler:
+        class_weights = wdf["method_3"].tolist()
+        samples_weight = meta_df.num_label.apply(lambda i: class_weights[i]).tolist()
+        samples_weight = torch.tensor(samples_weight, dtype=torch.float)
+        sampler = WeightedRandomSampler(samples_weight, len(samples_weight))
+    else:
+        sampler = None
     d_loader = DataLoader(d_set, batch_size=params.batch_size, shuffle=False,
-                          num_workers=params.num_workers)
+                          num_workers=params.num_workers, sampler=sampler)
     return d_loader
 
 # unit testing
