@@ -11,7 +11,7 @@ if __name__ == "__main__":
     # parameters
     images_dir = "data/clean"
     csv_path = "data/csvs/test_1.csv"
-    ptm_path = "trained_models/code_test/ep5_model.pth"
+    ptm_path = "trained_models/best_model/exp2_1_ep5_model.pth"
     device_type = "gpu"
 
     # process

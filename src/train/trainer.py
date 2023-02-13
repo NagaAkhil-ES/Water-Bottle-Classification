@@ -92,7 +92,7 @@ class Trainer:
     def fit(self, num_epochs, run_name):
         print("Model training started")
 
-        self.save_dir = setup_save_dir(os.path.join("trained_models", run_name))
+        self.save_dir = setup_save_dir(os.path.join("trained_models/exp_models", run_name))
         
         for epoch in range(1, num_epochs+1):
             print(f"Epoch {epoch}/{num_epochs}", end="  ")
