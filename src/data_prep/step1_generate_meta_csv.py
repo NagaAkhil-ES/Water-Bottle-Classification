@@ -31,6 +31,6 @@ if __name__ == "__main__":
     show_class_distribution(meta_df.txt_label, "Total dataset class")
     txt_label_unique = meta_df["txt_label"].unique()
     num_label_unique = label_encoder.fit_transform(txt_label_unique)
-    print("text and numerical labels ordered pairs\n", list(zip(txt_label_unique, num_label_unique)))
+    print("text and numerical labels ordered pairs\n", list(zip(txt_label_unique, num_label_unique)), "\n")
     setup_save_dir(save_dir)
     meta_df.to_csv(f"{save_dir}/metadata.csv", index=False)
