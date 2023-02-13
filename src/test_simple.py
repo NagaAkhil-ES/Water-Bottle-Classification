@@ -14,6 +14,7 @@ if __name__ == "__main__":
     ptm_path = "trained_models/code_test/ep5_model.pth"
     device_type = "gpu"
 
+    # process
     df = pd.read_csv(csv_path)
     device = setup_device(device_type)
     ptr = Predictor(ptm_path, device)

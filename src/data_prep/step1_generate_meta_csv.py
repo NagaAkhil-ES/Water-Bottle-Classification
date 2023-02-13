@@ -8,7 +8,7 @@ from utils.util import setup_save_dir
 if __name__ == "__main__":
     # parameters
     raw_dir = "data/raw"
-    save_dir = "data/csvs1"
+    save_dir = "data/csvs"
 
     # read all png and jpeg image paths
     l_image_paths = glob(f"{raw_dir}/**/*.jpeg", recursive=True)
