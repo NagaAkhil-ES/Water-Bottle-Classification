@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 import numpy as np
 import os
-import random
 from torch.nn.functional import softmax
 from sklearn.metrics import accuracy_score, f1_score
 
@@ -73,7 +72,7 @@ class Trainer:
             val_loss = np.mean(losses)
             cw_acc = classwise_accuracy_score(y_true, y_pred)
             val_f1 = f1_score(y_true, y_pred, average='macro')
-            print(f"--val loss: {val_loss:.5f}, acc:{acc:.2f}, cw_acc:{cw_acc}, f1:{val_f1:.2f}")
+            print(f"--val loss: {val_loss:.4f}, acc:{acc:.2f}, cw_acc:{cw_acc}, f1:{val_f1:.2f}")
             return val_f1
 
     def _save_model(self, epoch, val_f1):
@@ -103,27 +102,3 @@ class Trainer:
             self._save_model(epoch, val_f1)
 
         print(f"Model training completed!")
-
-def setup_deterministic_training(seed=137):
-    # os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"
-    os.environ['PYTHONHASHSEED'] = str(seed)
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed(seed)
-    torch.backends.cudnn.benchmark = False
-    torch.backends.cudnn.deterministic = True
-    # torch.use_deterministic_algorithms(True)
-
-def setup_device(device_type, gpu_ids="0"):
-    if device_type == "gpu":
-        os.environ["CUDA_VISIBLE_DEVICES"] = gpu_ids
-        device = "cuda"
-    else:
-        os.environ["CUDA_VISIBLE_DEVICES"] = "" 
-        device = "cpu"
-    print(f"Device used: {device}")
-    print(f"torch cuda device count: {torch.cuda.device_count()}\n")
-    return device
-
-

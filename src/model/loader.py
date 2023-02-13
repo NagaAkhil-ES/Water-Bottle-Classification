@@ -1,8 +1,10 @@
 import torch
 from torch.nn import DataParallel, Linear
 from torchvision import models as tv_models
+import os
 
 from model.custom_cnn import CustomCNN1, CustomCNN2
+from utils.util import listdir
 
 def get_model(model_arch, device, ptm_path=""):
     if model_arch == "custom1":
@@ -26,3 +28,10 @@ def get_model(model_arch, device, ptm_path=""):
         print("##__NOTE__: Data Parallelism is not activated\n")
     
     return model
+
+def get_ptm_path(ptm_dir, ptm_ep=-1):
+    if ptm_ep == -1: # default loads the lastest model
+        pth_files = listdir(dir=ptm_dir, file_ext=".pth")
+        return os.path.join(ptm_dir, pth_files[-1])  
+    else:
+        return os.path.join(ptm_dir, f"ep{ptm_ep}_model.pth")

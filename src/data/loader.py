@@ -11,8 +11,8 @@ def get_data_loader(params, f_train, f_norm=True):
         csv_path = params.train_csv_path
         title = "train dataset"
     else:
-        csv_path = params.val_csv_path
-        title = "validation dataset"
+        csv_path = params.test_csv_path
+        title = "test dataset"
     transforms = get_transforms(params, f_train, f_norm)
     meta_df = pd.read_csv(csv_path)
     show_class_distribution(meta_df.txt_label, title)

@@ -5,7 +5,7 @@ num_workers = 40
 
 images_dir = "data/clean"
 train_csv_path = "data/csvs/train_1.csv"
-val_csv_path = "data/csvs/test_1.csv"
+test_csv_path = "data/csvs/test_1.csv"
 seed = 137
 image_shape = [224, 224]
 mean = [0.25,0.25,0.25]
